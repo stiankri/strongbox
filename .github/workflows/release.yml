@@ -1,4 +1,4 @@
-name: Create Release
+name: Create release of CLI
 
 on:
   push:
@@ -13,21 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install JDK
-      run: chmod +x ./script/installjdk    
-    - name: Install JDK
       run: ./script/installjdk
-    - name: JAVA_HOME
-      run: echo $JAVA_HOME
-    - name: HOME
-      run: echo $HOME
-    - name: PATH
-      run: echo $PATH      
-    - name: JAVA_HOME
-      run: java -version
-      env:
-          JAVA_HOME: $HOME/corretto-8/
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew cliTar
       env:
@@ -40,10 +26,6 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
         draft: false
         prerelease: false
     - name: Upload Release Asset
@@ -52,7 +34,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./cli/build/distributions/strongbox-cli-0.0.1.tar.gz
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./cli/build/distributions/strongbox-cli-{{ github.ref }}.tar.gz
         asset_name: strongbox-cli.tar.gz
-        asset_content_type: application/x-gzip       
+        asset_content_type: application/x-gzip
