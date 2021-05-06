@@ -16,7 +16,7 @@ apply plugin: 'nebula.deb'
 apply plugin: 'signing'
 
 mainClassName = 'com.schibsted.security.strongbox.cli.StrongboxCLI'
-version = getenv('GIT_TAG') ? getenv('GIT_TAG') : "0.0.1";
+version = getenv('GITHUB_REF') ? getenv('GITHUB_REF').replace("/refs/tags/","") : "0.0.1";
 
 dependencies {
     compile project(':sdk')

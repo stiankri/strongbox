@@ -18,7 +18,7 @@ jobs:
       run: ./gradlew cliTar
       env:
           JAVA_HOME: /home/runner/corretto-8/
-          GIT_TAG: ${{ github.event.release.tag_name }}
+          GITHUB_REF: ${{ github.ref }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
